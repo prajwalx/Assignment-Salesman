@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> <%=title %></title>
+    <link rel='stylesheet' href='/stylesheets/style1.css' />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" >
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css">
+  </head>
+  <body>
+    <div class="container">
+      <!-- For demo purpose -->
+      <div class="row py-5">
+        <div class="col-lg-9 mx-auto text-white text-center">
+          <h1 class="display-4">Salesman Plus</h1>
+          <p class="lead mb-0">Salesman form data visualization.</p>
+          <a href="/"><button type="button" class="btn btn-dark">Back to Form</button></a>
+        </div>
+      </div>
+      <!-- End -->
+    
+    
+      <div class="row mb-5">
+        <div class="col-lg-8 mx-auto">
+          <!-- <h5 class="font-weight-light mb-4 font-italic text-white">Please fill out the form.</h5> -->
+          <div class="bg-white p-5 rounded shadow">
+            <h5 class="font-weight-light mb-4 font-italic text-center">Employee vs Sales</h5>
+            <canvas id="NamevSales" width="400" height="400"></canvas>
+        </div>
+      </div>  
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto">
+          <!-- <h5 class="font-weight-light mb-4 font-italic text-white">Please fill out the form.</h5> -->
+          <div class="bg-white p-5 rounded shadow">
+            <h5 class="font-weight-light mb-4 font-italic text-center">City vs Sales</h5>
+            <canvas id="CityvSales" width="400" height="400"></canvas>
+        </div>
+      </div>  
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+    <script>
+        function getRandomColors(n){
+            let colors = []
+            for(let i=0;i<n;i++)
+                colors.push('#'+Math.floor(Math.random()*16777215).toString(16));
+            return colors
+        };
+        var salesmen = '<%- JSON.stringify(salesmen) %>';
+        console.log(salesmen)
+        salesmen = JSON.parse(salesmen)
+        var sales = salesmen.map((salesman)=>parseInt(salesman.Sales))
+        var names = salesmen.map((salesman)=>(salesman.Name))
+        var locations = salesmen.map((salesman)=>(salesman.Location))
+        var dates = salesmen.map((salesman)=>(salesman.Date))
+        
+        var beginAtZeroOption = {
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+        console.log((salesmen))
+        var Chart1 = new Chart('NamevSales', {
+            type: 'horizontalBar',
+            data: {
+                datasets: [{
+                    label: 'Sales',
+                    data: sales,
+                    backgroundColor: getRandomColors(1)[0],
+                    borderColor: 'rgba(0, 0, 0, 1)',
+                    borderWidth:1
+                }, ],
+                labels: names
+            },
+            options: beginAtZeroOption
+        });
+
+        var Chart2 = new Chart('CityvSales', {
+            type: 'pie',
+            data: {
+                datasets: [{
+                    label: 'Sales',
+                    data: sales,
+                    backgroundColor: getRandomColors(sales.length),
+                    borderColor: 'rgb(255, 255, 255)',
+                    borderWidth: 1
+                }, ],
+                labels: locations
+            }
+        });
+    </script>
+  </body>
+</html>
